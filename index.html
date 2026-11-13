@@ -258,6 +258,52 @@ textarea{min-height:84px;resize:vertical}
 
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 98px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:30;box-shadow:var(--shadow-lg);animation:up .25s ease both;max-width:calc(100% - 32px);text-align:center}
 
+
+/* ── Añadidos: otros, tratamientos, importar, copias, ayuda ── */
+:root{--rose:#B4498A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--rose:#F49ACB}}
+:root[data-theme="dark"]{--rose:#F49ACB}
+.g-otro{background:color-mix(in srgb,var(--rose) 14%,transparent);color:var(--rose)}
+.pick button[aria-pressed="true"].g-otro{background:var(--rose);color:var(--surface)}
+.card-title{font-family:var(--display);font-size:17px;font-weight:700}
+.int-row{grid-template-columns:1fr 70px 70px 34px}
+.int-head{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.2}
+.int-head span:nth-child(n+2){text-align:center}
+.int-name{display:flex;align-items:center;gap:8px;min-width:0;font-size:14px}
+.int-name i{width:9px;height:9px;border-radius:50%;flex:none;background:currentColor}
+.int-name span{color:var(--ink);overflow-wrap:anywhere}
+.int-del{width:34px;height:34px;border-radius:10px;border:0;background:none;color:var(--muted);font-size:18px}
+.int-del[data-armed]{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad);font-size:11px;font-weight:700}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
+.url-box{background:var(--surface-2);border-radius:12px;padding:10px 12px;overflow-x:auto}
+.url-box code{font-size:12.5px;white-space:nowrap;color:var(--muted)}
+a.btn{text-decoration:none;display:inline-block}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+label.radio{flex-direction:row;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;color:var(--ink);background:var(--surface-2);padding:10px 14px;border-radius:12px;cursor:pointer}
+label.radio input{width:auto;accent-color:var(--sea)}
+.imp-prev{border-radius:14px;padding:12px 14px;font-size:14px;background:color-mix(in srgb,var(--sea) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--sea) 30%,transparent)}
+.imp-prev.err{background:color-mix(in srgb,var(--bad) 10%,var(--surface));border-color:color-mix(in srgb,var(--bad) 30%,transparent)}
+.imp-prev ul{margin:6px 0 0;padding-left:18px;color:var(--muted)}
+.bk-list{display:grid;gap:6px}
+.bk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--surface-2)}
+.bk-row b{font-weight:700;font-size:14px}
+.bk-row small{display:block;color:var(--muted);font-size:12px}
+.bk-row button[data-armed]{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.icons{display:flex;gap:8px}
+.icon-btn.q{font-family:var(--display);font-weight:700;font-size:17px}
+.help .sec{align-items:center}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.toc a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;background:var(--surface);border:1px solid var(--line);padding:6px 11px;border-radius:999px}
+.help-card{margin-bottom:10px;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 12px)}
+.help-card h3{font-family:var(--display);font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.help-card p,.help-card li{max-width:62ch;line-height:1.55}
+.help-card p{margin:0 0 10px}
+.help-card ol,.help-card ul{margin:0 0 10px;padding-left:20px;display:grid;gap:6px}
+.help-card .tag{margin:2px 2px 2px 0}
+.hnum{width:28px;height:28px;border-radius:9px;display:inline-grid;place-items:center;font-size:14px;flex:none}
+.code{background:var(--surface-2);border-radius:12px;padding:12px;font-size:12.5px;overflow-x:auto;margin:0 0 10px;font-family:ui-monospace,Menlo,monospace}
+.help-card a,.note a{color:var(--sea);font-weight:600}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -267,7 +313,7 @@ textarea{min-height:84px;resize:vertical}
     <img src="mus-hero.jpg" alt="Mus tumbado en la orilla de la playa">
     <div class="hero-top">
       <span class="badge"><span class="pulse"></span><span id="hBadge">Cartilla de salud</span></span>
-      <button class="icon-btn" id="themeBtn" type="button" aria-label="Cambiar tema"></button>
+      <div class="icons"><button class="icon-btn q" id="helpBtn" type="button" aria-label="Ayuda">?</button><button class="icon-btn" id="themeBtn" type="button" aria-label="Cambiar tema"></button></div>
     </div>
     <div class="hero-body">
       <div class="eyebrow" id="hEyebrow">Border collie</div>
@@ -337,12 +383,61 @@ textarea{min-height:84px;resize:vertical}
       <div class="actions"><button class="btn primary" type="submit">Guardar ficha</button></div>
     </form>
 
-    <div class="sec"><h2>Cada cuánto</h2><p>en días</p></div>
+    <div class="sec"><h2>Tratamientos</h2><p>cada cuánto y cuándo avisar</p></div>
     <form id="intForm" class="card stack">
+      <div class="int-row int-head"><span>Tratamiento</span><span>Cada<br>(días)</span><span>Avisar<br>(días antes)</span></div>
       <div class="intervals" id="intList"></div>
-      <p class="note" style="margin:0">Déjalo en blanco para no seguir ese tratamiento en «Próximo».</p>
-      <div class="actions"><button class="btn primary" type="submit">Guardar intervalos</button></div>
+      <p class="note" style="margin:0">Deja «Cada» en blanco para no seguir ese tratamiento en «Próximo». «Avisar» se usa en el calendario del móvil.</p>
+      <div class="actions"><button class="btn primary" type="submit">Guardar</button></div>
     </form>
+    <form id="newTrat" class="card stack" style="margin-top:10px">
+      <h3 class="card-title">Añadir un tratamiento propio</h3>
+      <label>Nombre<input id="ntNombre" placeholder="Pastillas artrosis, pilas del GPS…" maxlength="60" required></label>
+      <div class="grid2">
+        <label>Tipo<select id="ntTipo"><option value="salud">Salud</option><option value="anti">Antiparasitario</option><option value="vac">Vacuna</option><option value="otro">Otro</option></select></label>
+        <label>Cada (días)<input id="ntDias" type="number" min="1" inputmode="numeric" placeholder="30"></label>
+      </div>
+      <div class="actions"><button class="btn primary" type="submit">Añadir</button></div>
+    </form>
+
+    <div class="sec"><h2>Avisos en el móvil</h2></div>
+    <div class="card stack">
+      <p style="margin:0">Suscríbete al calendario de Mus. Cada tratamiento aparece el día que toca, con un aviso los días antes que hayas puesto arriba y otro ese mismo día a las 10:00. Se actualiza solo cuando apuntas algo.</p>
+      <div class="url-box"><code id="calUrl"></code></div>
+      <div class="actions" style="justify-content:flex-start">
+        <a class="btn amber" id="calSub" href="#">Suscribirme en el iPhone</a>
+        <button type="button" class="btn" id="calCopy">Copiar enlace</button>
+      </div>
+      <p class="note" style="margin:0">En iPhone, tras suscribirte, desactiva «Eliminar alertas» en ese calendario. Los pasos, también para Android, están en <a href="#" data-go-help="avisos">Ayuda</a>.</p>
+    </div>
+
+    <div class="sec"><h2>Importar</h2><p>JSON o CSV</p></div>
+    <div class="card stack">
+      <p style="margin:0">Para pasar una cartilla de papel: haz fotos, pásaselas a una IA (Claude, ChatGPT…) con las instrucciones de este botón y pega aquí lo que te devuelva. También vale un archivo de copia o un CSV de Excel.</p>
+      <div class="actions" style="justify-content:flex-start">
+        <button type="button" class="btn amber" id="aiCopy">Copiar instrucciones para la IA</button>
+        <button type="button" class="btn" id="impPick">Elegir archivo</button>
+        <input type="file" id="impFile" accept=".json,.csv,.txt,application/json,text/csv,text/plain" hidden>
+      </div>
+      <textarea id="impText" rows="5" placeholder="Pega aquí el JSON o el CSV"></textarea>
+      <div id="impPreview" class="imp-prev" hidden></div>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="impMode" id="impAdd" value="add" checked> Añadir a lo que hay</label>
+        <label class="radio"><input type="radio" name="impMode" id="impRep" value="replace"> Reemplazar todo</label>
+      </div>
+      <div class="actions"><button class="btn" id="impCheck" type="button">Revisar</button><button class="btn primary" id="impGo" type="button" disabled>Importar</button></div>
+    </div>
+
+    <div class="sec"><h2>Copias de seguridad</h2></div>
+    <div class="card stack">
+      <p style="margin:0">Cada domingo se guarda sola una copia en la nube, y otra antes de cada importación. Se conservan las 25 últimas. También puedes descargar la cartilla a tu móvil.</p>
+      <div class="actions" style="justify-content:flex-start">
+        <button type="button" class="btn primary" id="bkJson">Descargar copia</button>
+        <button type="button" class="btn" id="bkCsv">Descargar para Excel</button>
+        <button type="button" class="btn" id="bkNow">Copia en la nube ahora</button>
+      </div>
+      <div id="bkList" class="bk-list"></div>
+    </div>
 
     <div class="sec"><h2>Aspecto</h2></div>
     <div class="theme-seg" id="themeSeg">
@@ -351,7 +446,109 @@ textarea{min-height:84px;resize:vertical}
       <button type="button" data-mode="dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Oscuro</button>
     </div>
     <p class="note" style="margin:22px 4px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap">Cualquiera con el enlace puede ver la cartilla; para apuntar o cambiar algo hace falta el PIN. <button type="button" class="btn small" id="pinForget">Olvidar PIN en este móvil</button></p>
+    <div class="actions" style="justify-content:center;margin-top:20px"><button type="button" class="btn" data-go-help="">Ver la ayuda</button></div>
   </section>
+  <section id="v-ayuda" class="view help" hidden>
+    <div class="sec"><h2>Ayuda</h2><button type="button" class="btn small" data-back>Volver</button></div>
+    <nav class="toc">
+      <a href="#" data-go-help="h-proximo">Próximo</a><a href="#" data-go-help="h-apuntar">Apuntar</a><a href="#" data-go-help="h-historial">Historial</a><a href="#" data-go-help="h-datos">Datos</a><a href="#" data-go-help="h-ficha">Ficha</a><a href="#" data-go-help="avisos">Avisos</a><a href="#" data-go-help="h-importar">Importar</a><a href="#" data-go-help="h-copias">Copias</a><a href="#" data-go-help="h-pin">PIN</a>
+    </nav>
+
+    <article class="card help-card">
+      <h3>Qué es esto</h3>
+      <p>La cartilla de salud de Mus: lo que se le ha puesto, cuándo le toca lo siguiente, su peso y lo que se gasta en el veterinario. Los datos están en la nube, así que se ve lo mismo desde cualquier móvil.</p>
+      <p>En el iPhone, ábrela en Safari y pulsa <b>Compartir → Añadir a pantalla de inicio</b>. Así se abre a pantalla completa, como una app.</p>
+      <p>Arriba a la derecha de la foto tienes dos botones: el de <b>?</b> abre esta ayuda y el redondo cambia entre tema automático, claro y oscuro.</p>
+    </article>
+
+    <article class="card help-card" id="h-proximo">
+      <h3><span class="hnum g-anti">1</span>Próximo</h3>
+      <p>El marcador bajo la foto cuenta los tratamientos <b>pasados</b> (rojo), los que tocan en los próximos 14 días (<b>pronto</b>, ámbar) y los que están <b>al día</b> (verde).</p>
+      <p>Debajo, cada tratamiento tiene un anillo que se va llenando desde la última vez hasta la siguiente. El número del centro dice cuántos días o meses faltan, o cuánto lleva de retraso.</p>
+      <p>La fecha siguiente se calcula sumando el intervalo de <i>Ficha → Tratamientos</i> a la última vez que lo apuntaste. Un tratamiento solo aparece cuando tiene intervalo y al menos un registro.</p>
+      <p><b>Botiquín</b>: lo que tienes guardado en el cajón. Usa + y − al gastar o comprar; si bajas a 0 y pulsas − otra vez, se quita de la lista.</p>
+    </article>
+
+    <article class="card help-card" id="h-apuntar">
+      <h3><span class="hnum g-vac">2</span>Apuntar algo</h3>
+      <p>Pulsa el botón ámbar <b>+</b> de la barra de abajo. Pon la fecha, toca lo que se le hizo (puedes marcar varias cosas de la misma visita) y, si quieres, el producto, el peso, el importe, la clínica y notas.</p>
+      <p>Al marcar un tratamiento te propone el producto de la última vez, para no tener que escribirlo.</p>
+      <p>Para corregir o borrar, toca el registro en el Historial.</p>
+    </article>
+
+    <article class="card help-card" id="h-historial">
+      <h3><span class="hnum g-salud">3</span>Historial</h3>
+      <p>Todo lo apuntado, del más reciente al más antiguo y agrupado por años. Los colores indican el tipo: <span class="tag g-anti">Antiparasitarios</span> <span class="tag g-vac">Vacunas</span> <span class="tag g-salud">Salud</span> <span class="tag g-otro">Otros</span></p>
+      <p>Usa el buscador (busca en productos, notas y clínica) o los filtros para ver solo un tratamiento o solo los registros con peso.</p>
+    </article>
+
+    <article class="card help-card" id="h-datos">
+      <h3><span class="hnum g-otro">4</span>Peso y gastos</h3>
+      <p>La gráfica muestra todos los pesos apuntados. «Adulto» empieza en su primer cumpleaños; «Desde cachorro» lo enseña todo. Toca un punto para ver la fecha.</p>
+      <p>El gasto suma los importes que hayas puesto, agrupados por año.</p>
+    </article>
+
+    <article class="card help-card" id="h-ficha">
+      <h3><span class="hnum g-anti">5</span>Ficha</h3>
+      <p><b>Ficha de Mus</b>: nombre, nacimiento, padres, raza, chip y notas.</p>
+      <p><b>Tratamientos</b>: para cada uno, cada cuántos días toca y cuántos días antes quieres el aviso. Deja «Cada» vacío para que no salga en Próximo.</p>
+      <p><b>Tratamientos propios</b>: añade lo que no venga de serie, como pastillas para la artrosis o las pilas del localizador GPS. Elige el tipo (define el color) y cada cuánto toca. A partir de ahí aparece al apuntar, en el historial, en Próximo y en el calendario. Si borras uno, sus registros antiguos se conservan.</p>
+    </article>
+
+    <article class="card help-card" id="avisos">
+      <h3><span class="hnum g-vac">6</span>Avisos en el móvil</h3>
+      <p>Los avisos llegan a través de un <b>calendario suscrito</b>: tu móvil lo consulta solo cada pocas horas y te avisa como con cualquier cita.</p>
+      <p><b>iPhone</b></p>
+      <ol>
+        <li>En <i>Ficha → Avisos en el móvil</i>, pulsa <b>Suscribirme en el iPhone</b> y confirma.</li>
+        <li>Ve a <b>Ajustes → Apps → Calendario → Cuentas → Calendarios suscritos → Mus · cartilla</b> y desactiva <b>Eliminar alertas</b>. Si no, el iPhone ignora los avisos.</li>
+        <li>Opcional: en <i>Calendario → Cuentas → Obtener datos</i>, elige «Cada hora» para que los cambios lleguen antes.</li>
+      </ol>
+      <p><b>Android (Google Calendar)</b></p>
+      <ol>
+        <li>Copia el enlace con <b>Copiar enlace</b>.</li>
+        <li>En un ordenador, abre calendar.google.com → <b>Otros calendarios → + → Desde URL</b>, pega el enlace y añádelo.</li>
+        <li>En la app de Google Calendar, entra en los ajustes de ese calendario y pon una notificación por defecto para eventos de todo el día (Google no usa las alertas del archivo). Google puede tardar hasta un día en reflejar cambios.</li>
+      </ol>
+      <p>Cuando le pongas el tratamiento, apúntalo en la app: el evento se mueve solo a la siguiente fecha. Si se pasa la fecha sin apuntarlo, el evento aparece cada día como «atrasado».</p>
+    </article>
+
+    <article class="card help-card" id="h-importar">
+      <h3><span class="hnum g-salud">7</span>Importar una cartilla</h3>
+      <p>Pensado para pasar una cartilla de papel de golpe:</p>
+      <ol>
+        <li>Haz fotos claras de todas las páginas de la cartilla.</li>
+        <li>En <i>Ficha → Importar</i>, pulsa <b>Copiar instrucciones para la IA</b>.</li>
+        <li>Abre Claude, ChatGPT o la IA que uses, pega las instrucciones y adjunta las fotos.</li>
+        <li>Copia el JSON que te devuelva, pégalo en el cuadro y pulsa <b>Revisar</b>. Verás cuántos registros entran, de qué fechas y si se crean tratamientos nuevos.</li>
+        <li>Elige <b>Añadir a lo que hay</b> (se saltan los registros repetidos) o <b>Reemplazar todo</b>, y pulsa <b>Importar</b>.</li>
+      </ol>
+      <p>Antes de importar se hace sola una copia en la nube, así que siempre puedes deshacerlo restaurando esa copia.</p>
+      <p><b>Formato CSV</b> (por ejemplo, desde Excel): una fila por tratamiento, separado por punto y coma, con estas columnas:</p>
+      <pre class="code">fecha;tratamiento;detalle;peso;coste;lugar;notas
+12/11/2026;Bravecto;20-40 kg;22,3;306;El Viso;
+12/11/2026;Rabia;;;;;</pre>
+      <p>Las filas con la misma fecha se juntan en una sola visita. Los nombres se reconocen aunque pongas la marca (Milbemax, Frontline, Seresto…). Lo que no se reconozca se crea como tratamiento propio.</p>
+    </article>
+
+    <article class="card help-card" id="h-copias">
+      <h3><span class="hnum g-otro">8</span>Copias de seguridad</h3>
+      <p>Hay tres capas:</p>
+      <ul>
+        <li><b>Automática</b>: cada domingo de madrugada se guarda una copia en la nube. También antes de cada importación.</li>
+        <li><b>Manual en la nube</b>: «Copia en la nube ahora», útil antes de cambios grandes.</li>
+        <li><b>Descargada</b>: «Descargar copia» guarda un archivo JSON en tu móvil (en iPhone, elige «Guardar en Archivos»). «Descargar para Excel» guarda un CSV que se abre en Excel o Numbers.</li>
+      </ul>
+      <p>Para volver a una copia de la nube, pulsa <b>Restaurar</b> en la lista. Para un archivo descargado, impórtalo con «Reemplazar todo».</p>
+    </article>
+
+    <article class="card help-card" id="h-pin">
+      <h3><span class="hnum g-anti">9</span>PIN</h3>
+      <p>Cualquiera con el enlace puede ver la cartilla, pero para apuntar, cambiar, importar o restaurar hace falta el PIN. Se pide la primera vez en cada móvil y luego se recuerda. Para quitarlo de un móvil: <i>Ficha → Olvidar PIN en este móvil</i>.</p>
+    </article>
+    <div class="actions" style="justify-content:center;margin-top:18px"><button type="button" class="btn" data-back>Volver</button></div>
+  </section>
+
 </div>
 
 <nav class="dock tabs" aria-label="Secciones">
@@ -402,7 +599,7 @@ textarea{min-height:84px;resize:vertical}
 <div class="toast" id="toast" hidden></div>
 
 <script>
-const CATS=[
+const BASE_CATS=[
  {id:'bravecto',label:'Bravecto',g:'anti'},
  {id:'milbactor',label:'Milbactor / Milbemax',short:'Milbactor',g:'anti'},
  {id:'pipeta',label:'Pipeta',g:'anti'},
@@ -416,7 +613,8 @@ const CATS=[
  {id:'limpieza',label:'Limpieza bucal',g:'salud'},
  {id:'consulta',label:'Consulta / tratamiento',short:'Consulta',g:'salud'},
 ];
-const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));
+let CATS=BASE_CATS.slice(),CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));
+const DEF_AVISO=3;
 const DEF_INT={bravecto:90,milbactor:90,pipeta:30,collar:365,rabia:365,polivalente:365,leish:365};
 const S={eventos:[],perfil:{},ajustes:{},botiquin:{items:[]},loaded:false};
 const SB='https://flyomodzvpdafdunxcwu.supabase.co',KEY='sb_publishable__TrkrTgO4iRxbK-3DG9tIQ_vY4gx3-5';
@@ -432,7 +630,10 @@ const eur=n=>Number(n).toLocaleString('es-ES',{style:'currency',currency:'EUR',m
 const days=(a,b)=>Math.round((D(b)-D(a))/864e5);
 const addDays=(s,n)=>{const d=D(s);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
 const sorted=()=>[...S.eventos].sort((a,b)=>b.fecha.localeCompare(a.fecha));
-const intervals=()=>Object.assign({},DEF_INT,S.ajustes.intervalos||{});
+const norm=s=>String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+function buildCats(){const G=['anti','vac','salud','otro'];CATS=BASE_CATS.concat((S.ajustes.custom||[]).map(c=>({id:c.id,label:c.label,g:G.includes(c.g)?c.g:'otro',custom:true})));CAT=Object.fromEntries(CATS.map(c=>[c.id,c]))}
+function intervals(){const o=Object.assign({},DEF_INT);(S.ajustes.custom||[]).forEach(c=>o[c.id]=c.dias||0);return Object.assign(o,S.ajustes.intervalos||{})}
+function avisos(){const o={};CATS.forEach(c=>o[c.id]=DEF_AVISO);return Object.assign(o,S.ajustes.avisos||{})}
 
 async function sb(path,opts={}){
   const r=await fetch(SB+'/rest/v1/'+path,Object.assign({},opts,{headers:Object.assign({apikey:KEY,'Content-Type':'application/json'},opts.headers||{})}));
@@ -442,7 +643,7 @@ async function load(){
   const [ev,meta]=await Promise.all([sb('mus_eventos?select=*'),sb('mus_meta?select=*')]);
   S.eventos=ev.map(e=>{const o={id:e.id,fecha:e.fecha,items:e.items||[]};if(e.peso!=null)o.peso=+e.peso;if(e.coste!=null)o.coste=+e.coste;if(e.lugar)o.lugar=e.lugar;if(e.notas)o.notas=e.notas;return o});
   const m=Object.fromEntries(meta.map(x=>[x.clave,x.valor]));
-  S.perfil=m.perfil||{};S.ajustes=m.ajustes||{};S.botiquin=m.botiquin||{items:[]};S.loaded=true;banner('');renderAll()}
+  S.perfil=m.perfil||{};S.ajustes=m.ajustes||{};buildCats();S.botiquin=m.botiquin||{items:[]};S.loaded=true;banner('');renderAll()}
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(_){return null}},lsSet=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(_){}};
 let pinWait=null;
 function getPin(){const p=lsGet('mus-pin');if(p)return Promise.resolve(p);
@@ -530,7 +731,7 @@ function renderHist(){
     html+='<div class="year"><span class="year-n">'+y+'</span><small>'+g.length+(g.length===1?' registro':' registros')+'</small></div><div class="yr">';
     for(const e of g){
       const d=D(e.fecha);
-      const tags=(e.items||[]).map(i=>{const c=CAT[i.cat]||{label:i.cat,g:'salud'};return '<span class="tag g-'+c.g+'">'+esc(c.short||c.label)+(i.detalle?' <i>'+esc(i.detalle)+'</i>':'')+'</span>'}).join('');
+      const tags=(e.items||[]).map(i=>{const c=CAT[i.cat]||{label:i.cat,g:'otro'};return '<span class="tag g-'+c.g+'">'+esc(c.short||c.label)+(i.detalle?' <i>'+esc(i.detalle)+'</i>':'')+'</span>'}).join('');
       const meta=[e.peso?'<span class="mchip">'+nf(e.peso,2)+' kg</span>':'',e.coste?'<span class="mchip">'+eur(e.coste)+'</span>':'',e.lugar?'<span class="mchip place">'+esc(e.lugar)+'</span>':''].join('');
       html+='<article class="ev" data-id="'+esc(e.id)+'" tabindex="0"><div class="ev-date"><b>'+d.getDate()+'</b><span>'+d.toLocaleDateString('es-ES',{month:'short'}).replace('.','')+'</span></div><div class="ev-card">'+(tags?'<div class="tags">'+tags+'</div>':'')+(meta?'<div class="ev-meta">'+meta+'</div>':'')+(e.notas?'<div class="ev-notes">'+esc(e.notas)+'</div>':'')+'</div></article>';
     }
@@ -582,15 +783,14 @@ function fillAjustes(force){
   const p=S.perfil||{};
   $('pNombre').value=p.nombre||'';$('pNac').value=p.nacimiento||'';$('pPadre').value=p.padre||'';$('pMadre').value=p.madre||'';$('pRaza').value=p.raza||'';$('pChip').value=p.chip||'';$('pOrigen').value=p.origen||'';$('pNotas').value=p.notas||'';
   const iv=intervals();
-  $('intList').innerHTML=CATS.map(c=>'<div class="int-row"><span>'+esc(c.label)+'</span><input id="int-'+c.id+'" type="number" min="1" inputmode="numeric" value="'+(iv[c.id]||'')+'" aria-label="Días entre '+esc(c.label)+'"></div>').join('');
+  const av=avisos();
+  $('intList').innerHTML=CATS.map(c=>'<div class="int-row"><span class="int-name g-'+c.g+'" style="background:none"><i></i><span>'+esc(c.label)+'</span></span><input id="int-'+c.id+'" type="number" min="1" inputmode="numeric" value="'+(iv[c.id]||'')+'" aria-label="Días entre '+esc(c.label)+'"><input id="av-'+c.id+'" type="number" min="0" inputmode="numeric" value="'+(av[c.id]??'')+'" aria-label="Días de aviso antes de '+esc(c.label)+'">'+(c.custom?'<button type="button" class="int-del" data-id="'+esc(c.id)+'" aria-label="Quitar '+esc(c.label)+'">×</button>':'<span></span>')+'</div>').join('');
   box.querySelectorAll('input,textarea,button').forEach(el=>el.disabled=!canWrite);
 }
 $('perfilForm').addEventListener('submit',async e=>{e.preventDefault();
   const p={nombre:$('pNombre').value.trim(),nacimiento:$('pNac').value,padre:$('pPadre').value.trim(),madre:$('pMadre').value.trim(),raza:$('pRaza').value.trim(),chip:$('pChip').value.trim(),origen:$('pOrigen').value.trim(),notas:$('pNotas').value.trim()};
   try{await rpc('mus_guardar_meta',{p_clave:'perfil',p_valor:p});await load();toast('Ficha guardada')}catch(err){fail(err,'No se ha podido guardar la ficha')}});
-$('intForm').addEventListener('submit',async e=>{e.preventDefault();
-  const o={};CATS.forEach(c=>{const v=parseInt($('int-'+c.id).value,10);o[c.id]=v>0?v:0});
-  try{await rpc('mus_guardar_meta',{p_clave:'ajustes',p_valor:{intervalos:o}});await load();toast('Intervalos guardados')}catch(err){fail(err,'No se han podido guardar')}});
+$('intForm').addEventListener('submit',e=>{e.preventDefault();saveAjustes(readAjustes(),'Tratamientos guardados')});
 
 /* Formulario de registro */
 function lastDetalle(cat){const ev=lastBy(cat);const it=ev&&(ev.items||[]).find(i=>i.cat===cat);return it&&it.detalle||''}
@@ -637,8 +837,8 @@ $('fDel').addEventListener('click',async()=>{
 /* Pestañas */
 function go(tab){
   document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.setAttribute('aria-selected',x.dataset.tab===tab));
-  ['proximo','historial','datos','ajustes'].forEach(t=>$('v-'+t).hidden=t!==tab);
-  if(tab==='ajustes')fillAjustes(true);lsSet('mus-tab',tab)}
+  ['proximo','historial','datos','ajustes','ayuda'].forEach(t=>$('v-'+t).hidden=t!==tab);
+  if(tab==='ajustes'){fillAjustes(true);loadCopias()}lsSet('mus-tab',tab)}
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;go(b.dataset.tab);window.scrollTo({top:0,behavior:'smooth'})});
 $('score').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;go('proximo');setTimeout(()=>$('dueList').scrollIntoView({behavior:'smooth',block:'start'}),30)});
 
@@ -661,6 +861,231 @@ $('themeBtn').addEventListener('click',()=>{const order=['auto','light','dark'];
 $('themeSeg').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)applyTheme(b.dataset.mode)});
 try{mq.addEventListener('change',()=>applyTheme(themeMode()))}catch(_){}
 applyTheme(themeMode());
+
+
+/* ── Tratamientos propios y avisos ── */
+function slug(s){return norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,24)||'t'}
+function newId(label){return 'x-'+slug(label)+'-'+Math.random().toString(36).slice(2,5)}
+$('intList').addEventListener('click',e=>{
+  const b=e.target.closest('.int-del');if(!b)return;
+  if(!b.dataset.armed){b.dataset.armed='1';b.textContent='¿Sí?';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent='×'}},3500);return}
+  const id=b.dataset.id;const aj=readAjustes();aj.custom=(aj.custom||[]).filter(c=>c.id!==id);
+  if(aj.intervalos)delete aj.intervalos[id];if(aj.avisos)delete aj.avisos[id];
+  saveAjustes(aj,'Tratamiento quitado. Sus registros se conservan.');
+});
+$('newTrat').addEventListener('submit',e=>{e.preventDefault();
+  const label=$('ntNombre').value.trim();if(!label)return;
+  if(CATS.some(c=>norm(c.label)===norm(label)||norm(c.short)===norm(label))){toast('Ya existe un tratamiento con ese nombre');return}
+  const dias=parseInt($('ntDias').value,10)||0;const aj=readAjustes();
+  const id=newId(label);
+  aj.custom=(aj.custom||[]).concat([{id,label,g:$('ntTipo').value,dias}]);
+  aj.intervalos=Object.assign({},aj.intervalos,{[id]:dias});
+  saveAjustes(aj,'«'+label+'» añadido').then(ok=>{if(ok){$('ntNombre').value='';$('ntDias').value=''}});
+});
+function readAjustes(){
+  const aj=JSON.parse(JSON.stringify(S.ajustes||{}));
+  const iv={},av={};
+  CATS.forEach(c=>{const a=$('int-'+c.id),b=$('av-'+c.id);
+    if(a){const v=parseInt(a.value,10);iv[c.id]=v>0?v:0}
+    if(b&&b.value!==''){const v=parseInt(b.value,10);av[c.id]=v>=0?v:DEF_AVISO}});
+  aj.intervalos=Object.assign({},aj.intervalos,iv);aj.avisos=Object.assign({},aj.avisos,av);
+  (aj.custom||[]).forEach(c=>{if(c.id in iv)c.dias=iv[c.id]});
+  return aj}
+async function saveAjustes(aj,msg){
+  try{await rpc('mus_guardar_meta',{p_clave:'ajustes',p_valor:aj});await load();fillAjustes(true);toast(msg);return true}
+  catch(err){fail(err,'No se han podido guardar los tratamientos');return false}}
+
+/* Calendario */
+const CAL=SB+'/functions/v1/mus-calendario';
+$('calUrl').textContent=CAL;
+$('calSub').href=CAL.replace(/^https:/,'webcal:');
+async function copyText(t,okMsg){
+  try{await navigator.clipboard.writeText(t);toast(okMsg)}
+  catch(_){const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+    let ok=false;try{ok=document.execCommand('copy')}catch(__){}ta.remove();toast(ok?okMsg:'No se ha podido copiar. Mantén pulsado el texto para copiarlo.')}}
+$('calCopy').addEventListener('click',()=>copyText(CAL,'Enlace del calendario copiado'));
+
+/* ── Importar ── */
+const KW=[['milbemax','milbactor'],['milbactor','milbactor'],['bravecto','bravecto'],['frontline','pipeta'],['vectra','pipeta'],['effitix','pipeta'],['advantix','pipeta'],['advocate','pipeta'],['pipeta','pipeta'],
+  ['scalibor','collar'],['seresto','collar'],['collar','collar'],['leish','leish'],['letifend','leish'],['canileish','leish'],['perrera','tos'],['tos ','tos'],['rabia','rabia'],['rabica','rabia'],
+  ['polivalente','polivalente'],['tetravalente','polivalente'],['pentavalente','polivalente'],['heptavalente','polivalente'],['octavalente','polivalente'],['trivalente','polivalente'],
+  ['analisis','analisis'],['analitica','analisis'],['prueba','analisis'],['sangre','analisis'],['test','analisis'],['limpieza','limpieza'],['dental','limpieza'],['bucal','limpieza'],['boca','limpieza'],
+  ['nexgard','antiparasitario'],['simparica','antiparasitario'],['credelio','antiparasitario'],['zipyran','antiparasitario'],['drontal','antiparasitario'],['desparasit','antiparasitario'],['antiparasit','antiparasitario'],
+  ['consulta','consulta'],['revision','consulta'],['radiograf','consulta'],['ecograf','consulta'],['tratamiento','consulta']];
+function parseDate(v){
+  if(v==null)return null;const s=String(v).trim();let m;
+  if(m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))return m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');
+  if(m=s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})$/)){let y=+m[3];if(y<100)y+=2000;return y+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0')}
+  return null}
+function parseNum(v){if(v==null||v==='')return null;if(typeof v==='number')return v>0?v:null;const n=parseFloat(String(v).replace(/[^\d,.\-]/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',','.'));return n>0?n:null}
+function makeMapper(extraCustom){
+  const known=CATS.concat((extraCustom||[]).map(c=>({id:c.id,label:c.label,g:c.g||'otro'})));
+  const created=[];
+  function map(raw){
+    const n=norm(raw);if(!n)return null;
+    const ex=known.concat(created).find(c=>norm(c.id)===n||norm(c.label)===n||(c.short&&norm(c.short)===n));
+    if(ex)return{id:ex.id,exact:true};
+    const nn=' '+n+' ';
+    for(const [k,id] of KW)if(nn.includes(k))return{id,exact:false};
+    const label=String(raw).trim().slice(0,60);const c={id:newId(label),label,g:'otro',dias:0};created.push(c);return{id:c.id,exact:true}}
+  return{map,created}}
+function normEvent(e,mapper){
+  const fecha=parseDate(e.fecha??e.date??e.dia);if(!fecha)return null;
+  let raw=[];
+  if(Array.isArray(e.items))raw=e.items.map(i=>typeof i==='string'?{t:i}:{t:i.cat??i.tratamiento??i.nombre??i.tipo,d:i.detalle??i.producto??''});
+  else{let t=e.tratamientos??e.tratamiento;if(typeof t==='string')t=t.split(/\s*[|+]\s*/);(t||[]).forEach(x=>raw.push({t:x,d:''}));if(raw.length===1&&e.detalle)raw[0].d=e.detalle}
+  const items=[];
+  raw.forEach(r=>{const m=mapper.map(r.t);if(!m)return;let d=String(r.d||'').trim();if(!m.exact&&!d)d=String(r.t).trim();
+    const prev=items.find(i=>i.cat===m.id);if(prev){if(d&&!prev.detalle.includes(d))prev.detalle=(prev.detalle?prev.detalle+' · ':'')+d}else items.push({cat:m.id,detalle:d})});
+  const o={fecha,items};if(e.id)o.id=String(e.id);
+  const p=parseNum(e.peso??e.kg),c=parseNum(e.coste??e.importe??e.precio??e.euros);if(p)o.peso=p;if(c)o.coste=c;
+  const l=String(e.lugar??e.clinica??e['clínica']??e.veterinario??'').trim(),n=String(e.notas??e.nota??e.observaciones??'').trim();if(l)o.lugar=l;if(n)o.notas=n;
+  return(o.items.length||o.peso||o.notas||o.coste)?o:null}
+function splitCSV(text){
+  const first=text.split(/\r?\n/)[0]||'';const cnt=ch=>first.split(ch).length;
+  const sep=cnt('\t')>cnt(';')&&cnt('\t')>cnt(',')?'\t':cnt(';')>=cnt(',')?';':',';
+  const rows=[];let row=[],cur='',q=false;
+  for(let i=0;i<text.length;i++){const ch=text[i];
+    if(q){if(ch==='"'){if(text[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch;continue}
+    if(ch==='"')q=true;else if(ch===sep){row.push(cur);cur=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(cur);rows.push(row);row=[];cur=''}else cur+=ch}
+  if(cur!==''||row.length){row.push(cur);rows.push(row)}
+  return rows.filter(r=>r.some(c=>c.trim()!==''))}
+function parseCSV(text){
+  const rows=splitCSV(text.replace(/^﻿/,''));if(rows.length<2)throw new Error('El CSV necesita una fila de cabecera y al menos una de datos.');
+  const H=rows[0].map(norm);const col=(...names)=>H.findIndex(h=>names.some(n=>h===n||h.startsWith(n)));
+  const ix={fecha:col('fecha','date','dia'),t:col('tratamiento','que','item','cat','vacuna'),d:col('detalle','producto','dosis','marca'),peso:col('peso','kg'),coste:col('coste','importe','precio','euros','€'),lugar:col('lugar','clinica','veterinari'),notas:col('notas','nota','observ')};
+  if(ix.fecha<0)throw new Error('No encuentro la columna «fecha» en la primera fila del CSV.');
+  const by=new Map();
+  rows.slice(1).forEach(r=>{const g=k=>ix[k]>=0?(r[ix[k]]||'').trim():'';const f=g('fecha');if(!f)return;
+    if(!by.has(f))by.set(f,{fecha:f,items:[],notas:[]});const e=by.get(f);
+    if(g('t'))e.items.push({tratamiento:g('t'),detalle:g('d')});
+    if(!e.peso&&g('peso'))e.peso=g('peso');if(!e.coste&&g('coste'))e.coste=g('coste');if(!e.lugar&&g('lugar'))e.lugar=g('lugar');
+    if(g('notas')&&!e.notas.includes(g('notas')))e.notas.push(g('notas'))});
+  return{eventos:[...by.values()].map(e=>Object.assign(e,{notas:e.notas.join(' ')})),meta:{}}}
+function parseImport(text){
+  text=text.trim();if(!text)throw new Error('No hay nada que importar.');
+  let raw;
+  if(/^[\[{]/.test(text)){
+    const j=JSON.parse(text.replace(/^```(json)?|```$/g,''));
+    raw=Array.isArray(j)?{eventos:j,meta:{}}:{eventos:j.eventos||j.events||j.registros||[],meta:j.meta||{perfil:j.perfil,ajustes:j.ajustes,botiquin:j.botiquin}};
+  }else if(/^```/.test(text)){return parseImport(text.replace(/^```\w*\s*/,'').replace(/```\s*$/,''))}
+  else raw=parseCSV(text);
+  const meta={};['perfil','ajustes','botiquin'].forEach(k=>{if(raw.meta&&raw.meta[k]&&typeof raw.meta[k]==='object')meta[k]=raw.meta[k]});
+  const mapper=makeMapper(meta.ajustes&&meta.ajustes.custom);
+  const eventos=(raw.eventos||[]).map(e=>normEvent(e,mapper)).filter(Boolean);
+  const malos=(raw.eventos||[]).length-eventos.length;
+  return{eventos,meta,created:mapper.created,malos}}
+let IMP=null;
+const keyOf=e=>e.fecha+'|'+(e.items||[]).map(i=>i.cat).sort().join(',');
+function impMode(){return $('impRep').checked?'replace':'add'}
+function checkImport(){
+  const box=$('impPreview');IMP=null;$('impGo').disabled=true;box.hidden=false;box.classList.remove('err');
+  try{
+    const r=parseImport($('impText').value);
+    if(!r.eventos.length&&!Object.keys(r.meta).length)throw new Error('No he encontrado ningún registro con fecha válida.');
+    const replace=impMode()==='replace';
+    const have=new Set(S.eventos.map(keyOf));
+    const nuevos=replace?r.eventos:r.eventos.filter(e=>!have.has(keyOf(e)));
+    const rep=r.eventos.length-nuevos.length;
+    const fechas=nuevos.map(e=>e.fecha).sort();
+    let h='<b>'+nuevos.length+(nuevos.length===1?' registro':' registros')+'</b> para importar';
+    if(fechas.length)h+=', del '+fmt(fechas[0])+' al '+fmt(fechas[fechas.length-1]);h+='.';
+    const ul=[];
+    if(rep)ul.push(rep+' ya estaban y se saltarán.');
+    if(r.malos)ul.push(r.malos+' sin fecha válida se ignorarán.');
+    if(r.created.length)ul.push('Tratamientos nuevos que se crearán: '+r.created.map(c=>esc(c.label)).join(', ')+'. Ponles intervalo luego en Tratamientos.');
+    if(r.meta.perfil)ul.push(replace||!S.perfil.nombre?'Incluye la ficha del perro.':'Trae ficha del perro, pero se mantiene la actual.');
+    if(r.meta.botiquin&&(replace||!(S.botiquin.items||[]).length))ul.push('Incluye botiquín.');
+    if(replace)ul.push('<b>Se borrará todo lo actual</b> (antes se guarda una copia).');
+    box.innerHTML=h+(ul.length?'<ul><li>'+ul.join('</li><li>')+'</li></ul>':'');
+    IMP={eventos:nuevos,meta:r.meta,created:r.created,replace};$('impGo').disabled=!nuevos.length&&!r.meta.perfil;
+  }catch(err){box.classList.add('err');box.textContent=(err instanceof SyntaxError?'El JSON no es válido: ':'')+err.message;}
+}
+$('impCheck').addEventListener('click',checkImport);
+['impAdd','impRep'].forEach(id=>$(id).addEventListener('change',()=>{if(!$('impPreview').hidden)checkImport()}));
+$('impText').addEventListener('input',()=>{$('impGo').disabled=true;IMP=null});
+$('impPick').addEventListener('click',()=>$('impFile').click());
+$('impFile').addEventListener('change',async()=>{const f=$('impFile').files[0];if(!f)return;$('impText').value=await f.text();$('impFile').value='';checkImport()});
+$('impGo').addEventListener('click',async()=>{
+  if(!IMP)return;const b=$('impGo');
+  if(IMP.replace&&!b.dataset.armed){b.dataset.armed='1';b.textContent='Pulsa otra vez: se reemplaza todo';setTimeout(()=>{delete b.dataset.armed;b.textContent='Importar'},4000);return}
+  const meta={};
+  const base=IMP.replace&&IMP.meta.ajustes?JSON.parse(JSON.stringify(IMP.meta.ajustes)):Object.assign(JSON.parse(JSON.stringify(S.ajustes||{})),IMP.replace?{}:{});
+  if(!IMP.replace&&IMP.meta.ajustes){const ia=IMP.meta.ajustes;base.intervalos=Object.assign({},ia.intervalos,base.intervalos);base.avisos=Object.assign({},ia.avisos,base.avisos);
+    const ids=new Set((base.custom||[]).map(c=>c.id));base.custom=(base.custom||[]).concat((ia.custom||[]).filter(c=>!ids.has(c.id)))}
+  if(IMP.created.length){base.custom=(base.custom||[]).concat(IMP.created)}
+  if(IMP.created.length||IMP.meta.ajustes)meta.ajustes=base;
+  if(IMP.meta.perfil&&(IMP.replace||!S.perfil.nombre))meta.perfil=IMP.meta.perfil;
+  if(IMP.meta.botiquin&&(IMP.replace||!(S.botiquin.items||[]).length))meta.botiquin=IMP.meta.botiquin;
+  b.disabled=true;b.textContent='Importando…';
+  try{const n=await rpc('mus_importar',{p_datos:{eventos:IMP.eventos,meta},p_reemplazar:IMP.replace});
+    await load();$('impText').value='';$('impPreview').hidden=true;IMP=null;toast(n+(n===1?' registro importado':' registros importados'));loadCopias()}
+  catch(err){fail(err,'No se ha podido importar: '+(err.message||''))}
+  finally{delete b.dataset.armed;b.textContent='Importar';b.disabled=!IMP}
+});
+function aiPrompt(){
+  const ids=CATS.map(c=>c.id+' ('+c.label+')').join(', ');
+  return `Te paso fotos de la cartilla veterinaria de mi perro. Transcribe TODO el historial a JSON con este formato y devuélveme solo el JSON, sin explicaciones:
+
+{"formato":"cartilla-mus","version":1,
+ "meta":{"perfil":{"nombre":"","nacimiento":"AAAA-MM-DD","raza":"","chip":""}},
+ "eventos":[
+  {"fecha":"AAAA-MM-DD","items":[{"cat":"rabia","detalle":"Nobivac Rabies, lote 123"}],"peso":22.3,"coste":45,"lugar":"Clínica X","notas":""}
+ ]}
+
+Reglas:
+- Un evento por fecha. Si el mismo día hay varias cosas (vacuna + desparasitación), van juntas en "items".
+- "cat" tiene que ser uno de estos identificadores: ${ids}. Si algo no encaja en ninguno, pon en "cat" su nombre tal cual (por ejemplo "pastillas artrosis").
+- polivalente incluye tetravalente, heptavalente, octavalente, etc. milbactor incluye Milbemax. pipeta incluye Frontline, Vectra, Advantix, Effitix. collar incluye Scalibor y Seresto.
+- En "detalle" pon el producto, la dosis o el lote si aparecen en la pegatina o el texto.
+- Fechas siempre AAAA-MM-DD. Peso en kg y coste en euros, como números.
+- Omite los campos que no aparezcan. No inventes nada: si algo no se lee bien, ponlo en "notas" con un signo de interrogación.`}
+$('aiCopy').addEventListener('click',()=>copyText(aiPrompt(),'Instrucciones copiadas. Pégalas en la IA junto con las fotos.'));
+
+/* ── Copias ── */
+function snapshot(){return{formato:'cartilla-mus',version:1,exportado:new Date().toISOString(),meta:{perfil:S.perfil,ajustes:S.ajustes,botiquin:S.botiquin},
+  eventos:sorted().reverse()}}
+function csvOf(){
+  const q=v=>{v=v==null?'':String(v);return /[";\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  const dmy=s=>s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4);const dec=n=>n==null?'':String(n).replace('.',',');
+  const out=[['fecha','tratamiento','detalle','peso','coste','lugar','notas'].join(';')];
+  sorted().reverse().forEach(e=>{const its=e.items&&e.items.length?e.items:[{cat:'',detalle:''}];
+    its.forEach((i,k)=>out.push([dmy(e.fecha),i.cat?(CAT[i.cat]?.label||i.cat):'',i.detalle||'',k?'':dec(e.peso),k?'':dec(e.coste),k?'':e.lugar||'',k?'':e.notas||''].map(q).join(';')))});
+  return '﻿'+out.join('\r\n')}
+async function saveFile(name,text,mime){
+  const file=new File([text],name,{type:mime});
+  if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title:name});return}catch(e){if(e&&e.name==='AbortError')return}}
+  const url=URL.createObjectURL(file);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000)}
+const stampName=()=>today();
+$('bkJson').addEventListener('click',()=>saveFile('cartilla-mus-'+stampName()+'.json',JSON.stringify(snapshot(),null,1),'application/json'));
+$('bkCsv').addEventListener('click',()=>saveFile('cartilla-mus-'+stampName()+'.csv',csvOf(),'text/csv'));
+$('bkNow').addEventListener('click',async()=>{try{await rpc('mus_copia',{});toast('Copia guardada en la nube');loadCopias()}catch(e){fail(e,'No se ha podido hacer la copia')}});
+let COPIAS=[];
+async function loadCopias(){
+  try{COPIAS=await sb('mus_copias?select=id,creada,motivo,n&order=creada.desc&limit=25')}catch(_){COPIAS=null}
+  const box=$('bkList');
+  if(COPIAS===null){box.innerHTML='<p class="note" style="margin:0">No se ha podido cargar la lista de copias.</p>';return}
+  if(!COPIAS.length){box.innerHTML='<p class="note" style="margin:0">Todavía no hay copias en la nube.</p>';return}
+  box.innerHTML='<p class="note" style="margin:4px 0 2px">Copias en la nube</p>'+COPIAS.map(c=>{const d=new Date(c.creada);
+    return '<div class="bk-row"><div><b>'+d.toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}).replace('.','')+' · '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+'</b><small>'+esc(c.motivo)+' · '+c.n+' registros</small></div>'+(canWrite?'<button type="button" class="btn small" data-restore="'+c.id+'">Restaurar</button>':'')+'</div>'}).join('');
+}
+$('bkList').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-restore]');if(!b)return;
+  if(!b.dataset.armed){b.dataset.armed='1';b.textContent='¿Seguro?';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent='Restaurar'}},4000);return}
+  b.disabled=true;b.textContent='Restaurando…';
+  try{const r=await sb('mus_copias?select=datos&id=eq.'+encodeURIComponent(b.dataset.restore));if(!r||!r[0])throw new Error('Copia no encontrada');
+    const n=await rpc('mus_importar',{p_datos:r[0].datos,p_reemplazar:true});await load();toast('Restaurada: '+n+' registros');loadCopias()}
+  catch(err){fail(err,'No se ha podido restaurar');loadCopias()}
+});
+
+/* ── Ayuda ── */
+let prevTab='proximo';
+function openHelp(anchor){const cur=document.querySelector('.tabs [aria-selected="true"]');if(cur)prevTab=cur.dataset.tab;go('ayuda');
+  setTimeout(()=>{const t=anchor&&$(anchor);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:$('v-ayuda').offsetTop-12,behavior:'smooth'})},40)}
+$('helpBtn').addEventListener('click',()=>openHelp());
+document.addEventListener('click',e=>{const a=e.target.closest('[data-go-help]');if(a){e.preventDefault();openHelp(a.dataset.goHelp)}
+  const bk=e.target.closest('[data-back]');if(bk){go(prevTab);window.scrollTo({top:0,behavior:'smooth'})}});
 
 function renderAll(){renderHeader();renderDue();renderKit();renderFilters();renderHist();renderDatos();fillAjustes(false);$('fab').hidden=!canWrite}
 renderAll();
