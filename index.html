@@ -902,12 +902,21 @@ async function sb(path,opts={}){
   const r=await fetch(SB+'/rest/v1/'+path,Object.assign({},opts,{headers:Object.assign({apikey:KEY,'Content-Type':'application/json'},opts.headers||{})}));
   if(!r.ok){let m='';try{m=(await r.json()).message}catch(_){}const e=new Error(m||r.statusText);e.status=r.status;throw e}
   const t=await r.text();return t?JSON.parse(t):null}
+/* Sin conexión: se enseña la última copia guardada en este móvil y no se deja apuntar nada */
+let OFFLINE=0;
+const sinRed=()=>OFFLINE||navigator.onLine===false;
+const esRed=e=>e&&!e.status&&/fetch|network|load failed|conexi/i.test(String(e.message||e));
 async function load(){
-  const [ms,ev,meta]=await Promise.all([sb('mus_mascotas?select=*&order=orden,creada'),sb('mus_eventos?select=*'),sb('mus_meta?select=*')]);
+  let ms,ev,meta;
+  try{[ms,ev,meta]=await Promise.all([sb('mus_mascotas?select=*&order=orden,creada'),sb('mus_eventos?select=*'),sb('mus_meta?select=*')]);
+    OFFLINE=0;lsSet('mus-snap',JSON.stringify({t:Date.now(),ms,ev,meta}))}
+  catch(e){let snap=null;try{snap=JSON.parse(lsGet('mus-snap'))}catch(_){}
+    if(!snap||!esRed(e))throw e;OFFLINE=snap.t;({ms,ev,meta}=snap)}
   S.mascotas=ms;
   S.eventos=ev.map(e=>{const o={id:e.id,mascota_id:e.mascota_id,fecha:e.fecha,items:e.items||[]};if(e.peso!=null)o.peso=+e.peso;if(e.coste!=null)o.coste=+e.coste;if(e.lugar)o.lugar=e.lugar;if(e.notas)o.notas=e.notas;return o});
   const m=Object.fromEntries(meta.map(x=>[x.clave,x.valor]));S.familia=m.familia||{};
-  const first=!S.loaded;S.loaded=true;banner('');
+  const first=!S.loaded;S.loaded=true;
+  if(OFFLINE){const t=new Date(OFFLINE);banner('Sin conexión · datos del '+t.toLocaleDateString('es-ES',{day:'numeric',month:'short'}).replace('.','')+', '+t.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+'. Puedes consultar, pero no apuntar.')}else banner('');
   if(!readonly){if(!P())setCur(S.mascotas[0]?S.mascotas[0].id:null);else setCur(cur)}
   renderAll();if(first&&pendingView){const v=pendingView;pendingView=null;go(v)}}
 let pendingView=null;
@@ -921,7 +930,9 @@ $('pinForm').addEventListener('submit',async e=>{e.preventDefault();const p=$('p
     if(ok===true){lsSet('mus-pin',p);$('pinSheet').hidden=true;pinWait&&pinWait.res(p);pinWait=null}else{$('pinMsg').textContent='Ese PIN no es correcto.';$('pinIn').select()}}
   catch(_){$('pinMsg').textContent='No se ha podido comprobar. Revisa la conexión.'}});
 $('pinCancel').addEventListener('click',()=>{$('pinSheet').hidden=true;if(pinWait){const e=new Error('cancel');e.cancel=true;pinWait.rej(e);pinWait=null}});
-async function rpc(fn,args){const pin=await getPin();
+async function rpc(fn,args){
+  if(sinRed()){toast('Sin conexión: no se puede guardar ahora');const e=new Error('offline');e.cancel=true;throw e}
+  const pin=await getPin();
   try{return await sb('rpc/'+fn,{method:'POST',body:JSON.stringify(Object.assign({p_pin:pin},args))})}
   catch(e){if(/PIN/.test(e.message))lsSet('mus-pin',null);throw e}}
 function fail(e,msg){if(e&&e.cancel)return;toast(e&&/PIN/.test(e.message)?'PIN incorrecto, vuelve a intentarlo':msg)}
@@ -1516,7 +1527,9 @@ renderAll();
   }catch(e){banner('No se ha podido cargar la cartilla. Revisa la conexión y recarga.')}
   clearTimeout(timer);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&[...document.querySelectorAll('.sheet')].every(s=>s.hidden))load().catch(()=>{})});
+  window.addEventListener('online',()=>load().catch(()=>{}));
 })();
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
