@@ -103,7 +103,7 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .banner{margin-top:14px;border-radius:var(--r-sm);padding:12px 14px;font-size:14px;font-weight:500;background:color-mix(in srgb,var(--warn) 16%,var(--surface));color:var(--ink);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent)}
 
 /* ── Cabeceras de sección ── */
-.view{animation:rise .45s cubic-bezier(.2,.7,.2,1) both}
+.view{animation:rise .45s cubic-bezier(.2,.7,.2,1) backwards}
 @keyframes rise{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .sec{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:30px 4px 14px}
 .sec h2{font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:-.02em}
@@ -304,6 +304,13 @@ label.radio input{width:auto;accent-color:var(--sea)}
 .code{background:var(--surface-2);border-radius:12px;padding:12px;font-size:12.5px;overflow-x:auto;margin:0 0 10px;font-family:ui-monospace,Menlo,monospace}
 .help-card a,.note a{color:var(--sea);font-weight:600}
 
+/* Deslizar entre mascotas */
+.pet-dots{display:flex;justify-content:center;gap:6px;margin-top:12px;min-height:6px}
+.pet-dots span{width:6px;height:6px;border-radius:3px;background:var(--line);transition:width .25s ease,background .25s ease}
+.pet-dots span.on{width:20px;background:var(--ink)}
+.wrap{overflow-x:clip}
+.swipe-move{will-change:transform}
+.swipe-anim{transition:transform .2s cubic-bezier(.3,.7,.3,1),opacity .2s ease}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* ── Añadidos: otros, tratamientos, importar, copias, ayuda ── */
@@ -508,6 +515,7 @@ body.ro [data-ro-hide]{display:none!important}
       <button type="button" class="s-warn" data-go="proximo"><b id="cWarn">–</b><span><i></i>Pronto</span></button>
       <button type="button" class="s-ok" data-go="proximo"><b id="cOk">–</b><span><i></i>Al día</span></button>
     </div>
+    <div class="pet-dots" id="petDots" aria-hidden="true"></div>
   </div>
 
   <section id="v-proximo" class="view" hidden>
@@ -642,7 +650,7 @@ body.ro [data-ro-hide]{display:none!important}
       <p><b>Añadir mascota</b>: la última tarjeta. Eliges perro o gato, el nombre y, si quieres, la fecha de nacimiento y una foto. Según la especie se cargan unos tratamientos de partida (a los gatos, trivalente y leucemia felina en vez de leishmaniosis), que luego puedes cambiar en su ficha.</p>
       <p><b>Lo próximo</b> junta lo que les toca a todos en los próximos dos meses, y lo que está pasado. Toca una línea para ir a esa mascota.</p>
       <p>Más abajo están los avisos en el móvil, las copias de seguridad, el nombre de la familia y el tema.</p>
-      <p>Dentro de una mascota, la flecha de arriba a la izquierda vuelve a Familia y las fotos pequeñas de al lado cambian de mascota sin salir de la sección en la que estás.</p>
+      <p>Dentro de una mascota, la flecha de arriba a la izquierda vuelve a Familia. Para pasar a otra mascota sin salir de la sección en la que estás, <b>desliza el dedo a izquierda o derecha</b> o toca su foto pequeña arriba. Los puntos bajo el marcador indican en qué mascota estás.</p>
     </article>
 
     <article class="card help-card" id="h-proximo">
@@ -956,8 +964,49 @@ function renderHeader(){
   $('hLine').innerHTML=bits.join(' · ');
   $('switcher').innerHTML=S.mascotas.length>1?S.mascotas.map(x=>'<button type="button" data-sw="'+esc(x.id)+'" aria-current="'+(x.id===cur)+'" aria-label="'+esc(x.nombre)+'">'+avHTML(x)+'</button>').join(''):'';
   $('roBadge').hidden=!readonly;
+  $('petDots').innerHTML=S.mascotas.length>1&&!readonly?S.mascotas.map(x=>'<span'+(x.id===cur?' class="on"':'')+'></span>').join(''):'';
 }
 $('switcher').addEventListener('click',e=>{const b=e.target.closest('[data-sw]');if(!b||b.dataset.sw===cur)return;setCur(b.dataset.sw);renderAll();if(view==='ficha')fillFicha(true)});
+
+/* ══════════ Deslizar para cambiar de mascota ══════════ */
+const PET_VIEWS=['proximo','historial','datos','ficha'];
+const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+function neighbor(dir){const n=S.mascotas.length;if(n<2)return null;const i=S.mascotas.findIndex(m=>m.id===cur);return S.mascotas[(i+dir+n)%n]}
+function swipeEls(){return [$('petHead'),$('v-'+view)].filter(Boolean)}
+function setTx(x,anim){swipeEls().forEach(el=>{el.classList.toggle('swipe-anim',!!anim);el.style.transform=x?'translate3d('+x+'px,0,0)':'';el.style.opacity=x?String(Math.max(.35,1-Math.abs(x)/(innerWidth*1.2))):''})}
+let swiping=false;
+function switchPet(dir){
+  if(swiping||readonly||!PET_VIEWS.includes(view))return;const nb=neighbor(dir);if(!nb)return;
+  const W=innerWidth;const done=()=>{setCur(nb.id);renderAll();if(view==='ficha')fillFicha(true)};
+  if(reduceMotion()){setTx(0);done();return}
+  swiping=true;setTx(-dir*W,true);
+  setTimeout(()=>{done();setTx(dir*W*0.35,false);void $('petHead').offsetWidth;setTx(0,true);
+    setTimeout(()=>{swipeEls().forEach(el=>el.classList.remove('swipe-anim'));swiping=false},230)},190)}
+(function(){
+  let x0=0,y0=0,t0=0,dx=0,lock=null,active=false;
+  const blocked=t=>t.closest('input,textarea,select,.switch,.chiprow,.url-box,.crop-box,.sheet,.dock,.code,.seg,.pet-pick');
+  document.addEventListener('touchstart',e=>{
+    active=false;if(e.touches.length!==1||swiping||readonly||!PET_VIEWS.includes(view)||S.mascotas.length<2)return;
+    if([...document.querySelectorAll('.sheet')].some(s=>!s.hidden))return;
+    const t=e.touches[0];if(t.clientX<24||t.clientX>innerWidth-24)return;if(blocked(e.target))return;
+    x0=t.clientX;y0=t.clientY;t0=Date.now();dx=0;lock=null;active=true},{passive:true});
+  document.addEventListener('touchmove',e=>{
+    if(!active)return;const t=e.touches[0];const mx=t.clientX-x0,my=t.clientY-y0;
+    if(!lock){if(Math.abs(mx)<10&&Math.abs(my)<10)return;lock=Math.abs(mx)>Math.abs(my)*1.3?'h':'v';if(lock==='v'){active=false;return}swipeEls().forEach(el=>el.classList.add('swipe-move'))}
+    e.preventDefault();dx=mx;setTx(dx,false)},{passive:false});
+  const end=()=>{
+    if(!active)return;active=false;swipeEls().forEach(el=>el.classList.remove('swipe-move'));if(lock!=='h')return;
+    const v=Math.abs(dx)/Math.max(1,Date.now()-t0);
+    if(Math.abs(dx)>Math.min(110,innerWidth*.25)||(v>.45&&Math.abs(dx)>35))switchPet(dx<0?1:-1);
+    else{setTx(0,true);setTimeout(()=>swipeEls().forEach(el=>el.classList.remove('swipe-anim')),220)}};
+  document.addEventListener('touchend',end);document.addEventListener('touchcancel',end);
+  document.addEventListener('keydown',e=>{
+    if((e.key!=='ArrowLeft'&&e.key!=='ArrowRight')||e.altKey||e.metaKey||e.ctrlKey)return;
+    if(e.target.closest&&e.target.closest('input,textarea,select'))return;
+    if([...document.querySelectorAll('.sheet')].some(s=>!s.hidden))return;
+    switchPet(e.key==='ArrowRight'?1:-1)});
+})();
+function swipeHint(){if(readonly||S.mascotas.length<2||lsGet('mus-hint-swipe'))return;lsSet('mus-hint-swipe','1');setTimeout(()=>toast('Desliza a los lados para cambiar de mascota'),600)}
 $('toFam').addEventListener('click',()=>{go('familia');window.scrollTo({top:0})});
 $('toFicha').addEventListener('click',()=>{go('ficha');setTimeout(()=>$('v-ficha').scrollIntoView({behavior:'smooth',block:'start'}),30)});
 
@@ -1433,6 +1482,7 @@ function go(v){
   document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.setAttribute('aria-selected',x.dataset.tab===v));
   if(v==='ficha')fillFicha(true);
   if(v==='familia')loadCopias();
+  if(PET_VIEWS.includes(v)&&S.loaded)swipeHint();
   if(!readonly&&v!=='ayuda')lsSet('mus-tab',v)}
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;
   if(b.dataset.tab!=='familia'&&!P()){toast('Añade primero una mascota');return}
